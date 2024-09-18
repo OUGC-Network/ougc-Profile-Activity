@@ -136,6 +136,10 @@ function getTemplate(string $templateName, bool $enableHTMLComments = true): str
 */
 function getPreview($message, $maxlen = 100, $stripquotes = true, $stripmycode = true)
 {
+    if (empty($message)) {
+        return $message;
+    }
+
     // Attempt to remove any [quote][/quote] MyCode alogn its content
     if ($stripquotes) {
         $message = preg_replace(array(
