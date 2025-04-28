@@ -30,6 +30,13 @@ declare(strict_types=1);
 
 namespace ougc\ProfileActivity\Core;
 
+use PluginLibrary;
+
+use function ougc\ProfileActivity\Admin\pluginInfo;
+
+use const OUGC_PROFILEACTIVITY_ROOT;
+use const PLUGINLIBRARY;
+
 const DEBUG = false;
 
 function loadLanguage(): bool
@@ -45,7 +52,7 @@ function loadLanguage(): bool
 
 function pluginLibraryRequirements(): object
 {
-    return (object)\ougc\ProfileActivity\Admin\pluginInfo()['pl'];
+    return (object)pluginInfo()['pl'];
 }
 
 function loadPluginLibrary(): bool
@@ -54,14 +61,14 @@ function loadPluginLibrary(): bool
 
     loadLanguage();
 
-    $fileExists = file_exists(\PLUGINLIBRARY);
+    $fileExists = file_exists(PLUGINLIBRARY);
 
-    if ($fileExists && !($PL instanceof \PluginLibrary)) {
-        require_once \PLUGINLIBRARY;
+    if ($fileExists && !($PL instanceof PluginLibrary)) {
+        require_once PLUGINLIBRARY;
     }
 
     if (!$fileExists || $PL->version < pluginLibraryRequirements()->version) {
-        \flash_message(
+        flash_message(
             $lang->sprintf(
                 $lang->ougcProfileActivityPluginLibraryWarning,
                 pluginLibraryRequirements()->url,
@@ -70,7 +77,7 @@ function loadPluginLibrary(): bool
             'error'
         );
 
-        \admin_redirect('index.php?module=config-plugins');
+        admin_redirect('index.php?module=config-plugins');
     }
 
     return true;
@@ -116,7 +123,7 @@ function getTemplate(string $templateName, bool $enableHTMLComments = true): str
     global $templates;
 
     if (DEBUG) {
-        $filePath = \OUGC_PROFILEACTIVITY_ROOT . "/Templates/{$templateName}.html";
+        $filePath = OUGC_PROFILEACTIVITY_ROOT . "/Templates/{$templateName}.html";
 
         $templateContents = file_get_contents($filePath);
 

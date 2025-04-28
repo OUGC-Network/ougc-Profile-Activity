@@ -30,6 +30,8 @@ declare(strict_types=1);
 
 namespace ougc\ProfileActivity\Hooks\Admin;
 
+use MyBB;
+
 function admin_config_plugins_deactivate(): bool
 {
     global $mybb, $page;
@@ -37,7 +39,7 @@ function admin_config_plugins_deactivate(): bool
     if (
         $mybb->get_input('action') != 'deactivate' ||
         $mybb->get_input('plugin') != 'ougc_profileactivity' ||
-        !$mybb->get_input('uninstall', \MyBB::INPUT_INT)
+        !$mybb->get_input('uninstall', MyBB::INPUT_INT)
     ) {
         return false;
     }
@@ -49,7 +51,7 @@ function admin_config_plugins_deactivate(): bool
     }
 
     if ($mybb->get_input('no')) {
-        \admin_redirect('index.php?module=config-plugins');
+        admin_redirect('index.php?module=config-plugins');
     }
 
     return true;

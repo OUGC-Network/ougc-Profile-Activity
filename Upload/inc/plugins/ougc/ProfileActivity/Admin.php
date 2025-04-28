@@ -30,11 +30,18 @@ declare(strict_types=1);
 
 namespace ougc\ProfileActivity\Admin;
 
+use DirectoryIterator;
+
+use function ougc\ProfileActivity\Core\loadLanguage;
+use function ougc\ProfileActivity\Core\loadPluginLibrary;
+
+use const OUGC_PROFILEACTIVITY_ROOT;
+
 function pluginInfo(): array
 {
     global $lang;
 
-    \ougc\ProfileActivity\Core\loadLanguage();
+    loadLanguage();
 
     return [
         'name' => 'OUGC Profile Activity',
@@ -57,16 +64,16 @@ function pluginActivate(): bool
 {
     global $PL, $cache, $lang;
 
-    \ougc\ProfileActivity\Core\loadLanguage();
+    loadLanguage();
 
     $pluginInfo = pluginInfo();
 
-    \ougc\ProfileActivity\Core\loadPluginLibrary();
+    loadPluginLibrary();
 
     // Add settings group
-    $settingsContents = \file_get_contents(OUGC_PROFILEACTIVITY_ROOT . '/settings.json');
+    $settingsContents = file_get_contents(OUGC_PROFILEACTIVITY_ROOT . '/settings.json');
 
-    $settingsData = \json_decode($settingsContents, true);
+    $settingsData = json_decode($settingsContents, true);
 
     foreach ($settingsData as $settingKey => &$settingData) {
         if (empty($lang->{"setting_ougc_profileactivity_{$settingKey}"})) {
@@ -91,8 +98,8 @@ function pluginActivate(): bool
     );
 
     // Add templates
-    $templatesDirIterator = new \DirectoryIterator(
-        \OUGC_PROFILEACTIVITY_ROOT . '/Templates'
+    $templatesDirIterator = new DirectoryIterator(
+        OUGC_PROFILEACTIVITY_ROOT . '/Templates'
     );
 
     $templates = [];
@@ -152,7 +159,7 @@ function pluginUninstall(): bool
 {
     global $db, $PL, $cache;
 
-    \ougc\ProfileActivity\Core\loadPluginLibrary();
+    loadPluginLibrary();
 
     $PL->settings_delete('ougc_profileactivity');
 

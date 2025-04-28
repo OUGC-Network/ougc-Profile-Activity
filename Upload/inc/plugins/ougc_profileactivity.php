@@ -28,12 +28,17 @@
 
 declare(strict_types=1);
 
-// Die if IN_MYBB is not defined, for security reasons.
+use function ougc\ProfileActivity\Admin\pluginActivate;
+use function ougc\ProfileActivity\Admin\pluginInfo;
+use function ougc\ProfileActivity\Admin\pluginIsInstalled;
+use function ougc\ProfileActivity\Admin\pluginUninstall;
+use function ougc\ProfileActivity\Core\addHooks;
+
 if (!defined('IN_MYBB')) {
     die('This file cannot be accessed directly.');
 }
 
-const OUGC_PROFILEACTIVITY_ROOT = \MYBB_ROOT . 'inc/plugins/ougc/ProfileActivity';
+const OUGC_PROFILEACTIVITY_ROOT = MYBB_ROOT . 'inc/plugins/ougc/ProfileActivity';
 
 // Plugin Settings
 define('ougc\ProfileActivity\Core\SETTINGS', [
@@ -42,7 +47,7 @@ define('ougc\ProfileActivity\Core\SETTINGS', [
 
 // PLUGINLIBRARY
 if (!defined('PLUGINLIBRARY')) {
-    define('PLUGINLIBRARY', \MYBB_ROOT . 'inc/plugins/pluginlibrary.php');
+    define('PLUGINLIBRARY', MYBB_ROOT . 'inc/plugins/pluginlibrary.php');
 }
 
 require_once OUGC_PROFILEACTIVITY_ROOT . '/Core.php';
@@ -52,33 +57,33 @@ if (defined('IN_ADMINCP')) {
 
     require_once OUGC_PROFILEACTIVITY_ROOT . '/Hooks/Admin.php';
 
-    \ougc\ProfileActivity\Core\addHooks('ougc\ProfileActivity\Hooks\Admin');
+    addHooks('ougc\ProfileActivity\Hooks\Admin');
 } else {
     require_once OUGC_PROFILEACTIVITY_ROOT . '/Hooks/Forum.php';
 
-    \ougc\ProfileActivity\Core\addHooks('ougc\ProfileActivity\Hooks\Forum');
+    addHooks('ougc\ProfileActivity\Hooks\Forum');
 }
 
 require_once OUGC_PROFILEACTIVITY_ROOT . '/Core.php';
 
 function ougc_profileactivity_info(): array
 {
-    return \ougc\ProfileActivity\Admin\pluginInfo();
+    return pluginInfo();
 }
 
 function ougc_profileactivity_activate(): bool
 {
-    return \ougc\ProfileActivity\Admin\pluginActivate();
+    return pluginActivate();
 }
 
 function ougc_profileactivity_is_installed(): bool
 {
-    return \ougc\ProfileActivity\Admin\pluginIsInstalled();
+    return pluginIsInstalled();
 }
 
 function ougc_profileactivity_uninstall(): bool
 {
-    return \ougc\ProfileActivity\Admin\pluginUninstall();
+    return pluginUninstall();
 }
 
 

@@ -30,13 +30,14 @@ declare(strict_types=1);
 
 namespace ougc\ProfileActivity\Hooks\Forum;
 
+use PostParser;
+
 use function ougc\ProfileActivity\Core\loadLanguage;
-
 use function ougc\ProfileActivity\Core\getTemplate;
-
 use function ougc\ProfileActivity\Core\getSetting;
-
 use function ougc\ProfileActivity\Core\getPreview;
+
+use const THIS_SCRIPT;
 
 function global_start()
 {
@@ -48,7 +49,7 @@ function global_start()
         $templatelist .= ',';
     }
 
-    if (\THIS_SCRIPT === 'member.php') {
+    if (THIS_SCRIPT === 'member.php') {
         $templatelist .= 'ougcProfileActivity_PostIcon, ougcProfileActivity_PostsRow, ougcProfileActivity_PostsRowEmpty, ougcProfileActivity_PostsTable, ougcProfileActivity_ThreadsRow, ougcProfileActivity_ThreadsRowEmpty, ougcProfileActivity_ThreadsTable';
     }
 }
@@ -73,7 +74,7 @@ function member_profile_end()
     if (!is_object($parser)) {
         require_once MYBB_ROOT . 'inc/class_parser.php';
 
-        $parser = new \PostParser();
+        $parser = new PostParser();
     }
 
     $profileUserID = (int)$memprofile['uid'];
