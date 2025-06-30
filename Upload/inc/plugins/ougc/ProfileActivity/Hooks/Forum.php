@@ -39,7 +39,7 @@ use function ougc\ProfileActivity\Core\getPreview;
 
 use const THIS_SCRIPT;
 
-function global_start()
+function global_start(): void
 {
     global $templatelist;
 
@@ -54,7 +54,7 @@ function global_start()
     }
 }
 
-function member_profile_end()
+function member_profile_end(): void
 {
     global $mybb, $templates, $theme, $db, $lang;
     global $parser, $forum_cache, $memprofile;
@@ -182,6 +182,8 @@ function member_profile_end()
             $fullSubject = $rowData['subject'] = htmlspecialchars_uni(
                 $parser->parse_badwords($rowData['subject'])
             );
+
+            $rowData['threadprefix'] = $rowData['threadprefix'] ?? '';
 
             if (my_strlen($rowData['subject']) + my_strlen($rowData['threadprefix']) > getSetting('maxTextLength')) {
                 $rowData['subject'] = my_substr(
