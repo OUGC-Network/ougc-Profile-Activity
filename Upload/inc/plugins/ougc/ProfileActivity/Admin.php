@@ -35,7 +35,7 @@ use DirectoryIterator;
 use function ougc\ProfileActivity\Core\loadLanguage;
 use function ougc\ProfileActivity\Core\loadPluginLibrary;
 
-use const OUGC_PROFILEACTIVITY_ROOT;
+use const ougc\ProfileActivity\ROOT;
 
 function pluginInfo(): array
 {
@@ -71,7 +71,7 @@ function pluginActivate(): bool
     loadPluginLibrary();
 
     // Add settings group
-    $settingsContents = file_get_contents(OUGC_PROFILEACTIVITY_ROOT . '/settings.json');
+    $settingsContents = file_get_contents(ROOT . '/settings.json');
 
     $settingsData = json_decode($settingsContents, true);
 
@@ -99,7 +99,7 @@ function pluginActivate(): bool
 
     // Add templates
     $templatesDirIterator = new DirectoryIterator(
-        OUGC_PROFILEACTIVITY_ROOT . '/Templates'
+        ROOT . '/Templates'
     );
 
     $templates = [];

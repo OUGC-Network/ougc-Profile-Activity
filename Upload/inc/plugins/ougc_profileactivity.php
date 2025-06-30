@@ -34,11 +34,13 @@ use function ougc\ProfileActivity\Admin\pluginIsInstalled;
 use function ougc\ProfileActivity\Admin\pluginUninstall;
 use function ougc\ProfileActivity\Core\addHooks;
 
+use const ougc\ProfileActivity\ROOT;
+
 if (!defined('IN_MYBB')) {
     die('This file cannot be accessed directly.');
 }
 
-const OUGC_PROFILEACTIVITY_ROOT = MYBB_ROOT . 'inc/plugins/ougc/ProfileActivity';
+define('ougc\ProfileActivity\ROOT', MYBB_ROOT . 'inc/plugins/ougc/ProfileActivity');
 
 // Plugin Settings
 define('ougc\ProfileActivity\Core\SETTINGS', [
@@ -50,21 +52,21 @@ if (!defined('PLUGINLIBRARY')) {
     define('PLUGINLIBRARY', MYBB_ROOT . 'inc/plugins/pluginlibrary.php');
 }
 
-require_once OUGC_PROFILEACTIVITY_ROOT . '/Core.php';
+require_once ROOT . '/Core.php';
 
 if (defined('IN_ADMINCP')) {
-    require_once OUGC_PROFILEACTIVITY_ROOT . '/Admin.php';
+    require_once ROOT . '/Admin.php';
 
-    require_once OUGC_PROFILEACTIVITY_ROOT . '/Hooks/Admin.php';
+    require_once ROOT . '/Hooks/Admin.php';
 
     addHooks('ougc\ProfileActivity\Hooks\Admin');
 } else {
-    require_once OUGC_PROFILEACTIVITY_ROOT . '/Hooks/Forum.php';
+    require_once ROOT . '/Hooks/Forum.php';
 
     addHooks('ougc\ProfileActivity\Hooks\Forum');
 }
 
-require_once OUGC_PROFILEACTIVITY_ROOT . '/Core.php';
+require_once ROOT . '/Core.php';
 
 function ougc_profileactivity_info(): array
 {

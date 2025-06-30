@@ -30,12 +30,14 @@ declare(strict_types=1);
 
 namespace ougc\ProfileActivity\Core;
 
+use stdClass;
+use postParser;
 use PluginLibrary;
 
 use function ougc\ProfileActivity\Admin\pluginInfo;
 
-use const OUGC_PROFILEACTIVITY_ROOT;
 use const PLUGINLIBRARY;
+use const ougc\ProfileActivity\ROOT;
 
 const DEBUG = false;
 
@@ -50,7 +52,7 @@ function loadLanguage(): bool
     return true;
 }
 
-function pluginLibraryRequirements(): object
+function pluginLibraryRequirements(): stdClass
 {
     return (object)pluginInfo()['pl'];
 }
@@ -113,8 +115,8 @@ function getSetting(string $settingKey = '')
 {
     global $mybb;
 
-    return isset(SETTINGS[$settingKey]) ? SETTINGS[$settingKey] : (
-    isset($mybb->settings['ougc_profileactivity_' . $settingKey]) ? $mybb->settings['ougc_profileactivity_' . $settingKey] : false
+    return SETTINGS[$settingKey] ?? (
+        $mybb->settings['ougc_profileactivity_' . $settingKey] ?? false
     );
 }
 
@@ -123,7 +125,7 @@ function getTemplate(string $templateName, bool $enableHTMLComments = true): str
     global $templates;
 
     if (DEBUG) {
-        $filePath = OUGC_PROFILEACTIVITY_ROOT . "/Templates/{$templateName}.html";
+        $filePath = ROOT . "/Templates/{$templateName}.html";
 
         $templateContents = file_get_contents($filePath);
 
@@ -141,7 +143,7 @@ function getTemplate(string $templateName, bool $enableHTMLComments = true): str
 * @param bool Strip MyCode Quotes from message.
 * @param bool Strip MyCode from message.
 */
-function getPreview($message, $maxlen = 100, $stripquotes = true, $stripmycode = true)
+function getPreview($message, $maxlen = 100, $stripquotes = true, $stripmycode = true): string
 {
     // Attempt to remove any [quote][/quote] MyCode alogn its content
     if ($stripquotes) {
@@ -156,8 +158,10 @@ function getPreview($message, $maxlen = 100, $stripquotes = true, $stripmycode =
     // Attempt to remove any MyCode
     if ($stripmycode) {
         global $parser;
-        if (!is_object($parser)) {
+
+        if (!($parser instanceof postParser)) {
             require_once MYBB_ROOT . 'inc/class_parser.php';
+
             $parser = new postParser();
         }
 
